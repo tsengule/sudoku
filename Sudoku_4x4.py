@@ -6,7 +6,7 @@ This is a temporary script file.
 """
 import numpy as np
 from itertools import permutations
-
+import matplotlib.pyplot as plt
 
 values = [1, 2, 3, 4]
 # random block generator 2x2
@@ -41,27 +41,51 @@ def row_add(val):
     return A, B, C, X, Y
 
 
-A, B, C, X, Y = row_add(values)
+
 # Generates the last block of Total sudoku matrix 4x4 via previous results
 # Generate all permutations of the values
 all_permutations = sorted(permutations(values))
 counter = 0  # Initialize the counter
-
-for i, perm in enumerate(all_permutations, start=1):
-    # Create a 2x2 numpy array with int32 type
-    D = np.array([[perm[0], perm[1]], [perm[2], perm[3]]], dtype=np.int32)
-    T = np.hstack((C, D))
-    U = np.hstack((np.transpose(B),np.transpose(D)))
-    is_unique1 = check_unique_rows(T)
-    is_unique2 = check_unique_rows(U)
-    counter += 1  # Increment the counter with each iteration
-    if counter > 1000:
-        print("Counter is bigger than 100. Restart the program.")
-        break
+while True: 
+    A, B, C, X, Y = row_add(values)
+    for i, perm in enumerate(all_permutations, start=1):
+        # Create a 2x2 numpy array with int32 type
+        D = np.array([[perm[0], perm[1]], [perm[2], perm[3]]], dtype=np.int32)
+        T = np.hstack((C, D))
+        U = np.hstack((np.transpose(B),np.transpose(D)))
+        is_unique1 = check_unique_rows(T)
+        is_unique2 = check_unique_rows(U)
+        counter += 1  # Increment the counter with each iteration
+        if ((is_unique1 == True) and (is_unique2 == True)):
+            break
     if ((is_unique1 == True) and (is_unique2 == True)):
         break
         
+    
+Sudoku_4x4 = np.hstack((np.transpose(Y),np.transpose(U)))
+
+
 #Total sudoku matrix 4x4
 print("4x4 Sudoku")
-print(np.hstack((np.transpose(Y),np.transpose(U))))
+print(Sudoku_4x4)
 print("Number of iterations:", counter)
+
+# Create a new figure
+plt.figure()
+
+# Create a 4x4 grid
+for i in range(5):
+    plt.plot([0, 4], [i, i], 'k-', linewidth=1)
+    plt.plot([i, i], [0, 4], 'k-', linewidth=1)
+
+# Display matrix values in the grid
+for i in range(4):
+    for j in range(4):
+        plt.text(j + 0.5, 3.5 - i, str(Sudoku_4x4[i, j]), ha='center', va='center', fontsize=20)
+
+plt.xlim(0, 4)
+plt.ylim(0, 4)
+plt.axis('off')  # Hide axes
+plt.show()
+
+
