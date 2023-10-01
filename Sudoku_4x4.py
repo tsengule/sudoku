@@ -83,8 +83,8 @@ for i in range(4):
     for j in range(4):
         plt.text(j + 0.5, 3.5 - i, str(Sudoku_4x4[i, j]), ha='center', va='center', fontsize=20)
 
-plt.xlim(0, 4)
-plt.ylim(0, 4)
+plt.xlim(-0.5, 4.5)  # Adjust the x-axis limit to center the grid
+plt.ylim(-0.5, 4.5)  # Adjust the y-axis limit to center the grid
 plt.axis('off')  # Hide axes
 plt.show()
 
